@@ -7,6 +7,7 @@ use App\Http\Controllers\ImagesController;
 use App\Http\Controllers\OrganizationsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth
+Route::get('register', [AuthenticatedSessionController::class, 'create'])
+    ->name('login')
+    ->middleware('guest');
+ Route::get('apply', [ApplicationController::class, 'create'])
+    ->name('apply.create');
+
+ 
+
+Route::post('application', [ApplicationController::class, 'store']);
+   
+
+Route::get('done', [ApplicationController::class, 'done'])
+    ->name('done');
+     
 
 Route::get('login', [AuthenticatedSessionController::class, 'create'])
     ->name('login')
@@ -101,9 +116,21 @@ Route::put('organizations/{organization}/restore', [OrganizationsController::cla
 
 // Contacts
 
-Route::get('contacts', [ContactsController::class, 'index'])
-    ->name('contacts')
+Route::get('applications', [ApplicationController::class, 'index'])
+    ->name('applications')
     ->middleware('auth');
+
+Route::get('applications/{application}/edit', [ApplicationController::class, 'edit'])
+    ->name('applications.edit')
+    ->middleware('auth');
+
+Route::get('applicationr/{application}', [ApplicationController::class, 'reject'])
+    ->name('applicationr')
+    ->middleware('auth');    
+
+Route::get('applicationj/{application}', [ApplicationController::class, 'accept'])
+    ->name('applicationj')
+    ->middleware('auth');     
 
 Route::get('contacts/create', [ContactsController::class, 'create'])
     ->name('contacts.create')
